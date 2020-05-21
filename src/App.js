@@ -19,6 +19,8 @@ export default class App extends React.Component {
     };
   }
 
+
+
   render() {
     let hasil;
     if (false) {
@@ -45,7 +47,7 @@ export default class App extends React.Component {
             src="https://2.bp.blogspot.com/-TH2uP1gy4mw/WRnDbVrVggI/AAAAAAAAAsc/K-dj6ga-sMkJIbc_icmWYdN2hPP_I5XdgCLcB/s1600/pgn%2Bsaka.png"
             style={{ width: "50%", padding: "2%" }}
           />
-          <Form style={{ textAlign: "left", marginBottom: "10px" }}>
+          <Form action="127.0.0.1:5000/predict_post" style={{ textAlign: "left", marginBottom: "10px" }}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Air Supply Pressure</Form.Label>
               <Form.Control
