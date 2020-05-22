@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 from flask import request
 
 app = Flask(__name__)
@@ -46,6 +46,8 @@ def predict():
 @app.route("/predict_post",methods=["POST"])
 def predict_post():
     # request_data = request.get_json()
+    content = jsonify(request.json)
+    print("Content: "+str(content))
     air_pressure = float(request.form['air_pressure'])
     temperature_enclosure = float(request.form['temperature_enclosure'])
     pcd = float(request.form['pcd'])
@@ -59,4 +61,4 @@ def predict_post():
     predicted = reg.predict([inference_data])
     return jsonify({'result':predicted[0]})
 
-app.run(port=5000)
+app.run(host='localhost',port=3500)
