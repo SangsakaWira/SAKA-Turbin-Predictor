@@ -43,16 +43,16 @@ export default class App extends React.Component {
       "turbine_air_inlet":this.state.turbine_air_inlet,
       "gas_fuel_temp":this.state.gas_fuel_temp
     }
-    let response = await axios.get("http://localhost:3500/predict").then(doc => {
+    let response = await axios.post("http://localhost:3500/predict_post",params).then(doc => {
       console.log(doc.data)
       return doc
     }).catch(err => {
 
     })
 
-    this.setState({
-      result:response.data.result
-    })
+    // this.setState({
+    //   result:response.data.result
+    // })
     
   }
 

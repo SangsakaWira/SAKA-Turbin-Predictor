@@ -7,6 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from flask_cors import CORS,cross_origin
 from flask import request
+import json 
 
 app = Flask(__name__)
 CORS(app)
@@ -45,20 +46,24 @@ def predict():
 
 @app.route("/predict_post",methods=["POST"])
 def predict_post():
-    # request_data = request.get_json()
-    content = jsonify(request.json)
-    print("Content: "+str(content))
-    air_pressure = float(request.form['air_pressure'])
-    temperature_enclosure = float(request.form['temperature_enclosure'])
-    pcd = float(request.form['pcd'])
-    actual_fuel_flow = float(request.form['actual_fuel_flow'])
-    generator = float(request.form['generator'])
-    t1_temperature = float(request.form['t1_temperature'])
-    gas_fuel_temp = float(request.form['gas_fuel_temp'])
-    turbine_air_inlet = float(request.form['turbine_air_inlet'])
-    parameters = np.asarray([air_pressure,temperature_enclosure,pcd,actual_fuel_flow,generator,t1_temperature,gas_fuel_temp,turbine_air_inlet])
-    inference_data = inference(parameters)
-    predicted = reg.predict([inference_data])
+    request_data = request.get_json()
+    
+    print("Type: "+str(type(request_data)))
+    print("JSON: "+str(request_data))
+    if request.method == 'POST':
+        air_pressure = float(request_data.get('air_pressure'))
+        temperature_enclosure = float(request_data.get('temperature_enclosure'))
+        pcd = float(request_data.get('pcd'))
+        actual_fuel_flow = float(request_data.get('actual_fuel_flow'))
+        generator = float(request_data.get('generator'))
+        t1_temperature = float(request_data.get('t1_temperature'))
+        gas_fuel_temp = float(request_data.get('gas_fuel_temp'))
+        turbine_air_inlet = float(request_data.get('turbine_air_inlet'))
+        parameters = np.asarray([air_pressure,temperature_enclosure,pcd,actual_fuel_flow,generator,t1_temperature,gas_fuel_temp,turbine_air_inlet])
+        print("Parameters: "+str(parameters))
+        inference_data = inference(parameters)
+        predicted = reg.predict([inference_data])
+    
     return jsonify({'result':predicted[0]})
 
 app.run(host='localhost',port=3500)
