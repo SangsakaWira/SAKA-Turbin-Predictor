@@ -100,6 +100,8 @@ export default class App extends React.Component {
             src="https://2.bp.blogspot.com/-TH2uP1gy4mw/WRnDbVrVggI/AAAAAAAAAsc/K-dj6ga-sMkJIbc_icmWYdN2hPP_I5XdgCLcB/s1600/pgn%2Bsaka.png"
             style={{ width: "50%", padding: "2%" }}
           />
+          
+          {hasil}
           <Form style={{ textAlign: "left", marginBottom: "10px" }} onSubmit={this.onClickHandler}>
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Air Supply Pressure</Form.Label>
@@ -171,7 +173,6 @@ export default class App extends React.Component {
               Predict
             </Button>
           </Form>
-          {hasil}
         </Container>
       </div>
     );
