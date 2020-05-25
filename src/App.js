@@ -15,6 +15,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       response: [],
+      msg:'',
       status: "not_predicted",
       result: "",
       air_pressure:"",
@@ -43,7 +44,7 @@ export default class App extends React.Component {
       "turbine_air_inlet":this.state.turbine_air_inlet,
       "gas_fuel_temp":this.state.gas_fuel_temp
     }
-    let response = await axios.post("http://178.128.53.193:3500/predict_post",params).then(doc => {
+    let response = await axios.post("http://0.0.0.0:3500/predict_post",params).then(doc => {
       console.log(doc.data)
       return doc
     }).catch(err => {
@@ -51,7 +52,8 @@ export default class App extends React.Component {
     })
 
      this.setState({
-       result:response.data.result
+       result:response.data.result,
+       msg:response.data.msg
     })
     
   }
@@ -68,7 +70,7 @@ export default class App extends React.Component {
 
   render() {
     let hasil;
-    if (this.state.result !== "") {
+    if (this.state.result !== "" && this.state.msg === "success") {
       // hasil = <Spinner animation="border" style={{ marginTop: "10px" }} />;
       hasil = (
         <Alert variant="success" style={{ marginTop: "10px", marginBottom:"10px"}}>
@@ -78,12 +80,12 @@ export default class App extends React.Component {
           </p>
         </Alert>
       );
-    } else if (this.state.result !== "") {
+    } else if (this.state.result !== "" && this.state.msg === "not success") {
       hasil = (
-        <Alert variant="success" style={{ marginTop: "10px", marginBottom:"10px", width:"50%" }}>
+        <Alert variant="danger" style={{ marginTop: "10px", marginBottom:"10px" }}>
           <Alert.Heading>Hasil Prediksi Model Anda: </Alert.Heading>
           <p>
-            {this.state.result}<strong>kW</strong>
+            <strong>{this.state.result}</strong>
           </p>
         </Alert>
       );

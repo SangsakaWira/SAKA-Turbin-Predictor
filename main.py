@@ -50,20 +50,25 @@ def predict_post():
     
     print("Type: "+str(type(request_data)))
     print("JSON: "+str(request_data))
-    if request.method == 'POST':
-        air_pressure = float(request_data.get('air_pressure'))
-        temperature_enclosure = float(request_data.get('temperature_enclosure'))
-        pcd = float(request_data.get('pcd'))
-        actual_fuel_flow = float(request_data.get('actual_fuel_flow'))
-        generator = float(request_data.get('generator'))
-        t1_temperature = float(request_data.get('t1_temperature'))
-        gas_fuel_temp = float(request_data.get('gas_fuel_temp'))
-        turbine_air_inlet = float(request_data.get('turbine_air_inlet'))
-        parameters = np.asarray([air_pressure,temperature_enclosure,pcd,actual_fuel_flow,generator,t1_temperature,gas_fuel_temp,turbine_air_inlet])
-        print("Parameters: "+str(parameters))
-        inference_data = inference(parameters)
-        predicted = reg.predict([inference_data])
-    
-    return jsonify({'result':predicted[0]})
+    try:
+        if request.method == 'POST':
+            air_pressure = float(request_data.get('air_pressure'))
+            temperature_enclosure = float(request_data.get('temperature_enclosure'))
+            pcd = float(request_data.get('pcd'))
+            actual_fuel_flow = float(request_data.get('actual_fuel_flow'))
+            generator = float(request_data.get('generator'))
+            t1_temperature = float(request_data.get('t1_temperature'))
+            gas_fuel_temp = float(request_data.get('gas_fuel_temp'))
+            turbine_air_inlet = float(request_data.get('turbine_air_inlet'))
+            parameters = np.asarray([air_pressure,temperature_enclosure,pcd,actual_fuel_flow,generator,t1_temperature,gas_fuel_temp,turbine_air_inlet])
+            print("Parameters: "+str(parameters))
+            inference_data = inference(parameters)
+            predicted = reg.predict([inference_data])
+            
+        return jsonify({'result':predicted[0],'msg':'success'})
+    except ValueError:
+        return jsonify({'result':"Data anda bukan angka!",'msg':'not success'})
+    except AttributeError:
+        return jsonify({'result':"Server is Down!"})
 
 app.run(host='0.0.0.0',port=3500)
